@@ -1,0 +1,52 @@
+ddc - digital desk calculator
+
+ddc is meant to be a similar calculator to the venerable dc, but optimized
+for digital computations.  As such, it only supports integer operations.
+It features 2 stacks, similar to the forth programming language, and
+has no registers or string support.  It also has no error checking of
+operands (yet?) so it may crash if given improper input.
+
+Defaults:
+The default input and output base is hexadecimal, and the initial data
+width is 16 bits unsigned.  The maximum bit width is 64 bits, since
+that's the underlying type of everything.  The default stack depth for
+both stacks is 16, configurable in the source code.
+
+Operators:
+q	quit
+d	duplicate
+p	print
+n	print and consume (no whitespace)
+o	change output base
+i	change input base
+k	set width*
+r	rotate (swap)
+v	over
++	add
+-	subtract
+*	multiply
+^	integer modular exponent
+|	bitwise or
+`	bitwise xor
+&	bitwise and
+~	bitwise negate
+#	comment to end of line
+>	pop to alternate stack
+<	push from alternate stack
+b	slice*
+
+Width:
+The width function allows you to work with signed and unsigned data.
+If a positive number is used, the data width is simply extended.  However,
+if a negative value is provided, all numbers in both stacks are treated
+as signed (2s complement) integers according to the current width,
+and sign extended to the absolute value of the provided width.
+
+Slice:
+The slice operator allows you to take parts of a value and interpret
+them individually.  It expects to find a value on the stack, with 2
+bit indices (0 indexed) on top.  It then reduces the value to the bits
+contained within the specified indices (inclusive).  For example:
+
+ABCD 4 7bp # yields
+C
